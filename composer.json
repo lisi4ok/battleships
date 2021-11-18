@@ -1,0 +1,25 @@
+{
+  "name": "lisi4ok/battleships",
+  "description": "PHP BattleShips Game",
+  "keywords": [
+    "battleships",
+    "php"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Zaio Klepoyshkov",
+      "email": "lisi4ok@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">= 7.0",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Battleships\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
