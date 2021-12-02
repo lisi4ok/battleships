@@ -10,7 +10,7 @@ namespace Battleships;
 
 final class Player extends Entity
 {
-    private $field;
+    private array $field = [];
 
     public function __construct(array $ships)
     {

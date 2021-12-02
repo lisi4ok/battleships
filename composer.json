@@ -13,8 +13,8 @@
     }
   ],
   "require": {
-    "php": ">= 7.0",
-    "ext-json": "*"
+    "php": "^8.0",
+    "psr/simple-cache": "3.0.x-dev"
   },
   "autoload": {
     "psr-4": {

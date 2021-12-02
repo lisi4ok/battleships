@@ -113,11 +113,30 @@ final class Field extends Entity
      * @param bool $stringified
      * @return array[]|string
      */
-    public static function getPattern(bool $stringified = false)
+    public static function getPattern(bool $stringified = false): array|string
     {
         if ($stringified === true) {
             return self::stringify(self::$pattern);
         }
         return self::$pattern;
+    }
+
+    /**
+     * @param string $coordinates
+     * @return bool
+     */
+    public static function validateCoordinates(string $coordinates): bool
+    {
+        $coordinates = trim($coordinates);
+        if (is_string($coordinates) && strlen($coordinates) > 1 && strlen($coordinates) <= 3) {
+            $y = strtoupper(substr($coordinates, 0, 1));
+            if (preg_match('/[A-J]+/', $y)) {
+                $x = substr($coordinates, 1);
+                if (preg_match('/[0-9]+/', $x) && ($x <= 10)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
