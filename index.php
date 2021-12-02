@@ -7,7 +7,7 @@
 <body>
 <pre>
 <?php
-$time_start = microtime(true);
+//$time_start = microtime(true);
 
 require __DIR__.'/vendor/autoload.php';
 
@@ -24,9 +24,14 @@ $game = new Game((new Cache($path)), $ships);
 $game->addPlayer();
 $game->addPlayer();
 
-$time_end = microtime(true);
-$execution_time = ($time_end - $time_start);
-echo '<b>Execution Time:</b> '. number_format((float) $execution_time, 10).' Secconds' . PHP_EOL;
+
+echo Field::stringify($game->getCache()->get('players')[1]['field']);
+echo Field::stringify($game->getCache()->get('players')[2]['field']);
+exit;
+
+//$time_end = microtime(true);
+//$execution_time = ($time_end - $time_start);
+//echo '<b>Execution Time:</b> '. number_format((float) $execution_time, 10).' Secconds' . PHP_EOL;
 ?>
 </pre>
 </body>

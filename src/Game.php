@@ -62,7 +62,14 @@ final class Game extends Entity
 
     public function addPlayer(): self
     {
-        array_push($this->players, new Player($this->getShips()));
+        $player = new Player($this->getShips());
+        array_push($this->players, $player);
+        $cache = [];
+        foreach ($this->players as $playerNumber => $player) {
+            $playerNumber += 1;
+            $cache[$playerNumber]['field'] = $player->getField();
+        }
+        $this->getCache()->set('players', $cache);
         return $this;
     }
 
