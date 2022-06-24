@@ -8,7 +8,9 @@ declare(strict_types=1);
 
 namespace Battleships;
 
-final class Player extends Entity
+use Serializable;
+
+final class Player extends Entity implements Serializable
 {
     private array $field = [];
 

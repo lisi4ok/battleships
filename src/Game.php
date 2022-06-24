@@ -31,7 +31,7 @@ final class Game extends Entity
     {
         $this->setCache($cache);
         $this->addShips($ships);
-        
+
     }
 
     public function addShip(ShipInterface $ship): self
@@ -73,11 +73,14 @@ final class Game extends Entity
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPlayers()
     {
-        return $this->players;
+        return $this->getCache();
     }
-    
+
     /**
      * Destroy the game
      *

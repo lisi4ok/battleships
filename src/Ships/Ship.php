@@ -16,14 +16,14 @@ abstract class Ship extends Entity implements ShipInterface
 	 *
 	 * @var array
 	 */
-	protected static $allowedTypes = ['battleship', 'destroyer'];
+	protected static $allowedTypes = ['carrier', 'battleship', 'cruiser', 'destroyer', 'submarine'];
 
 	/**
 	 * Allowed Ship Size Range
 	 *
 	 * @var array
 	 */
-    protected static $allowedSizeRange = [1, 8];
+    protected static $allowedSizeRange = [1, 5];
 
 	/**
 	 * Ship Type

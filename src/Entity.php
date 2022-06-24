@@ -47,4 +47,48 @@ abstract class Entity
      * @var array
      */
     public static $y = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G', 8 => 'H', 9 => 'I', 10 => 'J'];
+
+    public function serialize()
+    {
+        $res = [];
+
+        $reflect = new \ReflectionClass(__CLASS__);
+        $propList = $reflect->getProperties();
+
+        foreach($propList as $prop) {
+            if ($prop->class != __CLASS__) {
+                continue; // visible properties of base clases
+            }
+
+            $name = $prop->name;
+            $res[$name . ":" . __CLASS__] = serialize($this->$name);
+        }
+
+        if (method_exists(get_parent_class(__CLASS__), "serialize")) {
+            $base = unserialize(self::serialize());
+            $res = array_merge($res, $base);
+        }
+
+        return serialize($res);
+    }
+
+    public function unserialize($data) {
+
+        $values = unserialize($data);
+        foreach ($values as $key => $value) {
+
+            // key contains propertyName:className
+            $prop = explode(":", $key);
+            if ($prop[1] != __CLASS__) {
+                continue;
+            }
+
+            $this->$prop[0] = unserialize($value);
+        }
+
+        // call base class
+        if (method_exists(get_parent_class(__CLASS__), "unserialize")) {
+            self::unserialize($data);
+        }
+    }
 }

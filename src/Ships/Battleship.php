@@ -9,7 +9,7 @@ namespace Battleships\Ships;
 final class Battleship extends Ship implements ShipInterface
 {
 	protected $type = 'battleship';
-    protected $size = 5;
+    protected $size = 4;
 
 	public function __construct()
 	{
