@@ -11,26 +11,11 @@ use Battleships\Enumerations\Ship;
 
 trait ShipTrait
 {
-    /**
-     * Allowed Ship Size Range
-     *
-     * @var array
-     */
-    private static $allowedSizeRange = [1, 5];
+    private static array $allowedSizeRange = [1, 5];
 
-    /**
-     * Ship Type
-     *
-     * @var null|string
-     */
-    public $type = null;
+    public string $type;
 
-    /**
-     * Ship Size
-     *
-     * @var null|int
-     */
-    public $size = null;
+    public int $size;
 
     public function setSize(int $size) : self
     {
