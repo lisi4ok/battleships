@@ -4,15 +4,21 @@
  * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
  */
 
+declare(strict_types=1);
+
 namespace Battleships\Ships;
 
-final class Submarine extends Ship implements ShipInterface
+use Battleships\Enumerations\Ship;
+use Battleships\Traits\ShipTrait;
+use Battleships\Contracts\ShipInterface;
+
+final class Submarine implements ShipInterface
 {
-    protected $type = 'submarine';
-    protected $size = 3;
+    use ShipTrait;
 
     public function __construct()
     {
-        parent::__construct($this->type, $this->size);
+        $this->setType(Ship::SUBMARINE);
+        $this->setSize(1);
     }
 }

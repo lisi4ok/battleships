@@ -12,6 +12,7 @@ use DateInterval;
 use DateTime;
 use Exception;
 use Psr\SimpleCache\CacheInterface;
+use Psr\SimpleCache\CacheException;
 use Traversable;
 
 use function array_keys;

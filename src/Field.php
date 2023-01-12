@@ -113,7 +113,7 @@ final class Field extends Entity
      * @param bool $stringified
      * @return array[]|string
      */
-    public static function getPattern(bool $stringified = false): array|string
+    public static function getPattern(bool $stringified = false) : array|string
     {
         if ($stringified === true) {
             return self::stringify(self::$pattern);
@@ -125,7 +125,7 @@ final class Field extends Entity
      * @param string $coordinates
      * @return bool
      */
-    public static function validateCoordinates(string $coordinates): bool
+    public static function validateCoordinates(string $coordinates) : bool
     {
         $coordinates = trim($coordinates);
         if (is_string($coordinates) && strlen($coordinates) > 1 && strlen($coordinates) <= 3) {

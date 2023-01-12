@@ -4,15 +4,21 @@
  * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
  */
 
+declare(strict_types=1);
+
 namespace Battleships\Ships;
 
-final class Destroyer extends Ship implements ShipInterface
-{
-    protected $type = 'destroyer';
-    protected $size = 2;
+use Battleships\Enumerations\Ship;
+use Battleships\Traits\ShipTrait;
+use Battleships\Contracts\ShipInterface;
 
-	public function __construct()
-	{
-		parent::__construct($this->type, $this->size);
-	}
+final class Destroyer implements ShipInterface
+{
+    use ShipTrait;
+
+    public function __construct()
+    {
+        $this->setType(Ship::DESTROYER);
+        $this->setSize(2);
+    }
 }

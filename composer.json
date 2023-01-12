@@ -9,11 +9,11 @@
   "authors": [
     {
       "name": "Zaio Klepoyshkov",
-      "email": "master@lisi4ok.com"
+      "email": "lisi4ok@gmail.com"
     }
   ],
   "require": {
-    "php": "^8.0",
+    "php": "^8.1",
     "psr/simple-cache": "3.0.x-dev"
   },
   "autoload": {

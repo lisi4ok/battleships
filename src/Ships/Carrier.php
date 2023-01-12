@@ -4,15 +4,21 @@
  * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
  */
 
+declare(strict_types=1);
+
 namespace Battleships\Ships;
 
-final class Carrier extends Ship implements ShipInterface
+use Battleships\Enumerations\Ship;
+use Battleships\Traits\ShipTrait;
+use Battleships\Contracts\ShipInterface;
+
+final class Carrier implements ShipInterface
 {
-    protected $type = 'carrier';
-    protected $size = 5;
+    use ShipTrait;
 
     public function __construct()
     {
-        parent::__construct($this->type, $this->size);
+        $this->setType(Ship::CARRIER);
+        $this->setSize(5);
     }
 }

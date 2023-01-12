@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * @package Battleships
  * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
  */
@@ -8,7 +8,8 @@ declare(strict_types=1);
 
 namespace Battleships;
 
-use Battleships\Ships\ShipInterface;
+use Battleships\Contracts\ShipInterface;
+use Psr\SimpleCache\CacheInterface;
 
 final class Game extends Entity
 {
@@ -18,7 +19,7 @@ final class Game extends Entity
     protected $cache;
 
     /**
-     * @var \Battleships\Ships\ShipInterface[]
+     * @var \Battleships\Contracts\ShipInterface[]
      */
     protected $ships = [];
 
@@ -27,7 +28,7 @@ final class Game extends Entity
      */
     protected $players = [];
 
-    public function __construct(Cache $cache, array $ships)
+    public function __construct(CacheInterface $cache, array $ships)
     {
         $this->setCache($cache);
         $this->addShips($ships);
@@ -41,7 +42,7 @@ final class Game extends Entity
     }
 
     /**
-     * @param \Battleships\Ships\ShipInterface[] $ships
+     * @param \Battleships\Contracts\ShipInterface[] $ships
      * @return $this
      */
     public function addShips(array $ships): self
@@ -53,7 +54,7 @@ final class Game extends Entity
     }
 
     /**
-     * @return ShipInterface[]
+     * @return \Battleships\Contracts\ShipInterface[]
      */
     public function getShips(): array
     {
@@ -102,7 +103,7 @@ final class Game extends Entity
     /**
      * @param \Battleships\Cache $cache
      */
-    public function setCache(Cache $cache)
+    public function setCache(CacheInterface $cache)
     {
         $this->cache = $cache;
     }
