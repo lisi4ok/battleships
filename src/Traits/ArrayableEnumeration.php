@@ -8,7 +8,7 @@ namespace Battleships\Traits;
 
 trait ArrayableEnumeration
 {
-    public static function names() : array
+    public static function keys() : array
     {
         return array_column(self::cases(), 'name');
     }
@@ -20,10 +20,10 @@ trait ArrayableEnumeration
 
     public static function array() : array
     {
-        return array_combine(self::names(), self::values());
+        return array_combine(self::keys(), self::values());
     }
 
-    public static function exists($case)
+    public static function exists($case) : bool
     {
         return array_search($case, self::cases()) !== false;
     }

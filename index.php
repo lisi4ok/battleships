@@ -13,33 +13,21 @@ $time_start = microtime(true);
 require __DIR__.'/vendor/autoload.php';
 
 use Battleships\Field;
-use Battleships\Ships\Carrier;
-use Battleships\Ships\Battleship;
-use Battleships\Ships\Cruiser;
-use Battleships\Ships\Destroyer;
-use Battleships\Ships\Submarine;
+use \Battleships\Factories\ShipFactory;
 use Battleships\Game;
 use Battleships\Cache;
 
 $path = './var/cache';
 
-$ships = [
-    new Carrier,
-    new Battleship,
-    new Cruiser,
-    new Destroyer, new Destroyer,
-    new Submarine, new Submarine,
-];
-$game = new Game((new Cache($path)), $ships);
-//$player1 = $game->addPlayer();
-//$player2 = $game->addPlayer();
-//
-////$game->begin();
-//
+
+$game = new Game((new Cache($path)), ShipFactory::createAll());
+$player1 = $game->addPlayer();
+$player2 = $game->addPlayer();
 
 
-//$game->addPlayer();
-//$game->addPlayer();
+
+$game->addPlayer();
+$game->addPlayer();
 if (!$game->getCache()->has('game')) {
     $game->addPlayer();
     $game->addPlayer();

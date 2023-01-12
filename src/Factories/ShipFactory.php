@@ -16,6 +16,8 @@ use Battleships\Contracts\ShipInterface;
 
 abstract class ShipFactory
 {
+    public static array $ships = [];
+
     public static function create($type) : ShipInterface
     {
         switch ($type) {
@@ -35,5 +37,15 @@ abstract class ShipFactory
                 return new Submarine;
                 break;
         }
+    }
+
+    public static function createAll()
+    {
+        $ships = Ship::cases();
+        foreach ($ships as $ship) {
+            self::$ships[] = self::create($ship);
+        }
+
+        return self::$ships;
     }
 }
