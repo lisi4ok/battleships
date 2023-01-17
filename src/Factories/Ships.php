@@ -16,7 +16,7 @@ use Battleships\Ships\Submarine;
 use Battleships\Enumerations\Ship;
 use Battleships\Contracts\ShipInterface;
 
-abstract class ShipFactory
+abstract class Ships
 {
     public static array $ships = [];
 
@@ -48,6 +48,12 @@ abstract class ShipFactory
             self::$ships[] = self::create($ship);
         }
 
+        return self::$ships;
+    }
+
+    public static function get() : array
+    {
+        self::createAll();
         return self::$ships;
     }
 }
