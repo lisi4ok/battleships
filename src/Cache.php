@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Battleships
- * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
+ * @author  Zaio Klepoyshkov <master@lisi4ok.com>
  */
 
 declare(strict_types=1);
@@ -14,6 +14,7 @@ use Exception;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\CacheException;
 use Traversable;
+use InvalidArgumentException;
 
 use function array_keys;
 use function array_map;
@@ -110,13 +111,13 @@ final class Cache implements CacheInterface
     public function __construct(string $cachePath)
     {
         if (!$this->createDirectoryIfNotExists($cachePath)) {
-            throw new CacheException("Failed to create cache directory \"{$cachePath}\".");
+            throw new Exception("Failed to create cache directory \"{$cachePath}\".");
         }
 
         $this->cachePath = $cachePath;
     }
 
-    public function get($key, $default = null)
+    public function get(string $key, mixed $default = null) : mixed
     {
         $this->validateKey($key);
         $file = $this->getCacheFile($key);
@@ -133,7 +134,7 @@ final class Cache implements CacheInterface
         return unserialize($value);
     }
 
-    public function set($key, $value, $ttl = null): bool
+    public function set($key, $value, $ttl = null) : bool
     {
         $this->validateKey($key);
         $this->gc();
@@ -147,7 +148,7 @@ final class Cache implements CacheInterface
         $cacheDirectory = dirname($file);
 
         if (!is_dir($this->cachePath) || ($this->directoryLevel > 0 && !$this->createDirectoryIfNotExists($cacheDirectory))) {
-            throw new CacheException("Failed to create cache directory \"{$cacheDirectory}\".");
+            throw new Exception("Failed to create cache directory \"{$cacheDirectory}\".");
         }
 
         if (function_exists('posix_geteuid') && is_file($file) && fileowner($file) !== posix_geteuid()) {
@@ -165,7 +166,7 @@ final class Cache implements CacheInterface
         return touch($file, $expiration);
     }
 
-    public function delete($key): bool
+    public function delete($key) : bool
     {
         $this->validateKey($key);
         $file = $this->getCacheFile($key);
@@ -177,13 +178,13 @@ final class Cache implements CacheInterface
         return @unlink($file);
     }
 
-    public function clear(): bool
+    public function clear() : bool
     {
         $this->removeCacheFiles($this->cachePath, false);
         return true;
     }
 
-    public function getMultiple($keys, $default = null): iterable
+    public function getMultiple($keys, $default = null) : iterable
     {
         $keys = $this->iterableToArray($keys);
         $this->validateKeys($keys);
@@ -196,7 +197,7 @@ final class Cache implements CacheInterface
         return $results;
     }
 
-    public function setMultiple($values, $ttl = null): bool
+    public function setMultiple($values, $ttl = null) : bool
     {
         $values = $this->iterableToArray($values);
         $this->validateKeys(array_map('\strval', array_keys($values)));
@@ -208,7 +209,7 @@ final class Cache implements CacheInterface
         return true;
     }
 
-    public function deleteMultiple($keys): bool
+    public function deleteMultiple($keys) : bool
     {
         $keys = $this->iterableToArray($keys);
         $this->validateKeys($keys);
@@ -220,7 +221,7 @@ final class Cache implements CacheInterface
         return true;
     }
 
-    public function has($key): bool
+    public function has($key) : bool
     {
         $this->validateKey($key);
         return $this->existsAndNotExpired($this->getCacheFile($key));
@@ -231,7 +232,7 @@ final class Cache implements CacheInterface
      *
      * @return self
      */
-    public function withFileSuffix(string $fileSuffix): self
+    public function withFileSuffix(string $fileSuffix) : self
     {
         $new = clone $this;
         $new->fileSuffix = $fileSuffix;
@@ -245,7 +246,7 @@ final class Cache implements CacheInterface
      *
      * @return self
      */
-    public function withFileMode(int $fileMode): self
+    public function withFileMode(int $fileMode) : self
     {
         $new = clone $this;
         $new->fileMode = $fileMode;
@@ -259,7 +260,7 @@ final class Cache implements CacheInterface
      *
      * @return self
      */
-    public function withDirectoryMode(int $directoryMode): self
+    public function withDirectoryMode(int $directoryMode) : self
     {
         $new = clone $this;
         $new->directoryMode = $directoryMode;
@@ -274,7 +275,7 @@ final class Cache implements CacheInterface
      *
      * @return self
      */
-    public function withDirectoryLevel(int $directoryLevel): self
+    public function withDirectoryLevel(int $directoryLevel) : self
     {
         $new = clone $this;
         $new->directoryLevel = $directoryLevel;
@@ -288,7 +289,7 @@ final class Cache implements CacheInterface
      *
      * @return self
      */
-    public function withGcProbability(int $gcProbability): self
+    public function withGcProbability(int $gcProbability) : self
     {
         $new = clone $this;
         $new->gcProbability = $gcProbability;
@@ -302,7 +303,7 @@ final class Cache implements CacheInterface
      *
      * @return int
      */
-    private function ttlToExpiration($ttl): int
+    private function ttlToExpiration($ttl) : int
     {
         $ttl = $this->normalizeTtl($ttl);
 
@@ -324,7 +325,7 @@ final class Cache implements CacheInterface
      *
      * @return int|null TTL value as UNIX timestamp or null meaning infinity
      */
-    private function normalizeTtl($ttl): ?int
+    private function normalizeTtl($ttl) : ?int
     {
         if ($ttl === null) {
             return null;
@@ -344,7 +345,7 @@ final class Cache implements CacheInterface
      *
      * @return bool Whether the directory was created.
      */
-    private function createDirectoryIfNotExists(string $path): bool
+    private function createDirectoryIfNotExists(string $path) : bool
     {
         return is_dir($path) || (!is_file($path) && mkdir($path, $this->directoryMode, true) && is_dir($path));
     }
@@ -356,7 +357,7 @@ final class Cache implements CacheInterface
      *
      * @return string The cache file path.
      */
-    private function getCacheFile(string $key): string
+    private function getCacheFile(string $key) : string
     {
         if ($this->directoryLevel < 1) {
             return $this->cachePath . DIRECTORY_SEPARATOR . $key . $this->fileSuffix;
@@ -380,7 +381,7 @@ final class Cache implements CacheInterface
      * @param bool $expiredOnly Whether to only remove expired cache files.
      * If false, all files under `$path` will be removed.
      */
-    private function removeCacheFiles(string $path, bool $expiredOnly): void
+    private function removeCacheFiles(string $path, bool $expiredOnly) : void
     {
         if (($handle = @opendir($path)) === false) {
             return;
@@ -398,11 +399,11 @@ final class Cache implements CacheInterface
 
                 if (!$expiredOnly && !@rmdir($fullPath)) {
                     $errorMessage = error_get_last()['message'] ?? '';
-                    throw new CacheException("Unable to remove directory '{$fullPath}': {$errorMessage}");
+                    throw new Exception("Unable to remove directory '{$fullPath}': {$errorMessage}");
                 }
             } elseif ((!$expiredOnly || @filemtime($fullPath) < time()) && !@unlink($fullPath)) {
                 $errorMessage = error_get_last()['message'] ?? '';
-                throw new CacheException("Unable to remove file '{$fullPath}': {$errorMessage}");
+                throw new Exception("Unable to remove file '{$fullPath}': {$errorMessage}");
             }
         }
 
@@ -414,7 +415,7 @@ final class Cache implements CacheInterface
      *
      * @throws Exception
      */
-    private function gc(): void
+    private function gc() : void
     {
         if (random_int(0, 1000000) < $this->gcProbability) {
             $this->removeCacheFiles($this->cachePath, true);
@@ -424,7 +425,7 @@ final class Cache implements CacheInterface
     /**
      * @param mixed $key
      */
-    private function validateKey($key): void
+    private function validateKey($key) : void
     {
         if (!is_string($key) || $key === '' || strpbrk($key, '{}()/\@:')) {
             throw new InvalidArgumentException('Invalid key value.');
@@ -434,7 +435,7 @@ final class Cache implements CacheInterface
     /**
      * @param array $keys
      */
-    private function validateKeys(array $keys): void
+    private function validateKeys(array $keys) : void
     {
         foreach ($keys as $key) {
             $this->validateKey($key);
@@ -446,7 +447,7 @@ final class Cache implements CacheInterface
      *
      * @return bool
      */
-    private function existsAndNotExpired(string $file): bool
+    private function existsAndNotExpired(string $file) : bool
     {
         return is_file($file) && @filemtime($file) > time();
     }
@@ -458,7 +459,7 @@ final class Cache implements CacheInterface
      *
      * @return array
      */
-    private function iterableToArray($iterable): array
+    private function iterableToArray($iterable) : array
     {
         if (!is_iterable($iterable)) {
             throw new InvalidArgumentException('Iterable is expected, got ' . gettype($iterable));

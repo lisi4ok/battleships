@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Battleships
- * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
+ * @author  Zaio Klepoyshkov <master@lisi4ok.com>
  */
 
 declare(strict_types=1);
@@ -39,14 +39,14 @@ abstract class Entity
      *
      * @var array
      */
-    public static $x = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10];
+    public static array $x = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10];
 
     /**
      * Vertical coordinates
      *
      * @var array
      */
-    public static $y = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G', 8 => 'H', 9 => 'I', 10 => 'J'];
+    public static array $y = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G', 8 => 'H', 9 => 'I', 10 => 'J'];
 
     public function serialize()
     {
@@ -77,7 +77,6 @@ abstract class Entity
         $values = unserialize($data);
         foreach ($values as $key => $value) {
 
-            // key contains propertyName:className
             $prop = explode(":", $key);
             if ($prop[1] != __CLASS__) {
                 continue;
@@ -86,7 +85,6 @@ abstract class Entity
             $this->$prop[0] = unserialize($value);
         }
 
-        // call base class
         if (method_exists(get_parent_class(__CLASS__), "unserialize")) {
             self::unserialize($data);
         }

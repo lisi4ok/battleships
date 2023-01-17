@@ -1,8 +1,10 @@
 <?php
 /**
  * @package Battleships
- * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
+ * @author  Zaio Klepoyshkov <master@lisi4ok.com>
  */
+
+declare(strict_types=1);
 
 namespace Battleships\Traits;
 
@@ -13,7 +15,7 @@ trait ShipTrait
 {
     private static array $allowedSizeRange = [1, 5];
 
-    public string $type;
+    public Ship $type;
 
     public int $size;
 
@@ -48,7 +50,7 @@ trait ShipTrait
         return $this;
     }
 
-    public function getType() : string
+    public function getType() : Ship
     {
         return $this->type;
     }

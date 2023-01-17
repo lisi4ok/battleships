@@ -1,7 +1,8 @@
 <?php
 /**
  * @package Battleships
- * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
+ * @author  Zaio Klepoyshkov <master@lisi4ok.com>
+ *
  */
 
 declare(strict_types=1);

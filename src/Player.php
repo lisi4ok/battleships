@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Battleships
- * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
+ * @author  Zaio Klepoyshkov <master@lisi4ok.com>
  */
 
 declare(strict_types=1);
@@ -22,7 +22,7 @@ final class Player extends Entity implements Serializable
     /**
      * @return array
      */
-    public function getField(): array
+    public function getField() : array
     {
         return $this->field;
     }
@@ -38,7 +38,7 @@ final class Player extends Entity implements Serializable
     /**
      * @return $this
      */
-    private function placeShipsIntoField(array $ships): self
+    private function placeShipsIntoField(array $ships) : self
     {
         $this->field = Field::getPattern();
         $filled = [];

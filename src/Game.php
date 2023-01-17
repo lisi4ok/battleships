@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Battleships
- * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
+ * @author  Zaio Klepoyshkov <master@lisi4ok.com>
  */
 
 declare(strict_types=1);
@@ -13,10 +13,7 @@ use Psr\SimpleCache\CacheInterface;
 
 final class Game extends Entity
 {
-    /**
-     * @var \Battleships\Cache
-     */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /**
      * @var \Battleships\Contracts\ShipInterface[]
@@ -35,7 +32,7 @@ final class Game extends Entity
 
     }
 
-    public function addShip(ShipInterface $ship): self
+    public function addShip(ShipInterface $ship) : self
     {
         array_push($this->ships, $ship);
         return $this;
@@ -45,7 +42,7 @@ final class Game extends Entity
      * @param \Battleships\Contracts\ShipInterface[] $ships
      * @return $this
      */
-    public function addShips(array $ships): self
+    public function addShips(array $ships) : self
     {
         foreach ($ships as $ship) {
             $this->addShip($ship);
@@ -56,12 +53,12 @@ final class Game extends Entity
     /**
      * @return \Battleships\Contracts\ShipInterface[]
      */
-    public function getShips(): array
+    public function getShips() : array
     {
         return $this->ships;
     }
 
-    public function addPlayer(): self
+    public function addPlayer() : self
     {
         $player = new Player($this->getShips());
         array_push($this->players, $player);
@@ -74,35 +71,21 @@ final class Game extends Entity
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPlayers()
     {
         return $this->getCache();
     }
 
-    /**
-     * Destroy the game
-     *
-     * @return void
-     */
     public function __destruct()
     {
         $this->cache->clear();
     }
 
-    /**
-     * @return \Battleships\Cache
-     */
-    public function getCache()
+    public function getCache() : CacheInterface
     {
         return $this->cache;
     }
 
-    /**
-     * @param \Battleships\Cache $cache
-     */
     public function setCache(CacheInterface $cache)
     {
         $this->cache = $cache;

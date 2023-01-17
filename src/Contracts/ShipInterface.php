@@ -1,8 +1,10 @@
 <?php
 /**
  * @package Battleships
- * @author  Zaio Klepoyshkov <lisi4ok@gmail.com>
+ * @author  Zaio Klepoyshkov <master@lisi4ok.com>
  */
+
+declare(strict_types=1);
 
 namespace Battleships\Contracts;
 
@@ -13,7 +15,7 @@ interface ShipInterface
     public function __construct();
 
     public function setType(Ship $type) : self;
-    public function getType() : string;
+    public function getType() : Ship;
 
     public function setSize(int $size) : self;
     public function getSize() : int;
