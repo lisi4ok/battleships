@@ -18,12 +18,12 @@ final class Game extends Entity
     /**
      * @var \Battleships\Contracts\ShipInterface[]
      */
-    protected $ships = [];
+    protected array $ships = [];
 
     /**
      * @var \Battleships\Player[]
      */
-    protected $players = [];
+    protected array $players = [];
 
     public function __construct(CacheInterface $cache, array $ships)
     {
