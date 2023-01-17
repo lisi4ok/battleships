@@ -19,6 +19,6 @@ final class Submarine implements ShipInterface
     public function __construct()
     {
         $this->setType(Ship::SUBMARINE);
-        $this->setSize(1);
+        $this->setSize(3);
     }
 }

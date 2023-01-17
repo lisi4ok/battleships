@@ -19,6 +19,6 @@ final class Cruiser implements ShipInterface
     public function __construct()
     {
         $this->setType(Ship::CRUISER);
-        $this->setSize(3);
+        $this->setSize(1);
     }
 }

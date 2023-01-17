@@ -44,9 +44,9 @@ in order to build up a picture of the opponent's fleet.
  are sunk by the end of the round, the game is a draw.
 ```
 
-* Count - Ship - Size
-* 1x - Carrier ------ 5
-* 1x - Battleship -- 4
-* 1x - Cruiser ------ 3
-* 2x - Destroyer ---	2
-* 2x - Submarine --	1
+* Count     Ship       Size
+* 1x    - Carrier ------ 5
+* 1x    - Battleship --- 4
+* 1x    - Submarine ---- 3
+* 2x    - Destroyer ---- 2
+* 2x    - Cruiser ------ 1
