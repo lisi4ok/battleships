@@ -13,14 +13,14 @@ $time_start = microtime(true);
 require __DIR__.'/vendor/autoload.php';
 
 use Battleships\Field;
-use \Battleships\Factories\ShipFactory;
+use Battleships\Factories\Ships;
 use Battleships\Game;
 use Battleships\Cache;
 
 $path = './var/cache';
 
 
-$game = new Game((new Cache($path)), ShipFactory::createAll());
+$game = new Game((new Cache($path)), Ships::get());
 $player1 = $game->addPlayer();
 $player2 = $game->addPlayer();
 
