@@ -8,8 +8,22 @@ declare(strict_types=1);
 
 namespace Battleships;
 
-final class Field extends Entity
+final class Field
 {
+    const HORIZONTAL = 'x';
+    const VERTICAL   = 'y';
+
+    const WATER = '~';
+    const SHIP_PART = '#';
+//    const WATER = '.';
+//    const SHIP_PART = '=';
+
+    const HIT = 'X';
+    const MISS = 'O';
+
+    const VISIBLE = 1;
+    const HIDDEN = 0;
+
     /**
      *
      * 1  2  3  4  5  6  7  8  9  10
@@ -80,7 +94,51 @@ final class Field extends Entity
         ],
     ];
 
-    public static function stringify(array $field = []) : string
+    private static array $x = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10];
+
+    /**
+     * Vertical coordinates
+     *
+     * @var array
+     */
+    private static array $y = [1 => 'A', 2 => 'B', 3 => 'C', 4 => 'D', 5 => 'E', 6 => 'F', 7 => 'G', 8 => 'H', 9 => 'I', 10 => 'J'];
+
+    private array $field = [];
+    private ?int $type;
+
+    public function __construct(array $ships = null)
+    {
+        if ($ships !== null) {
+            $this->setType(self::VISIBLE);
+            $this->placeShips($ships);
+        } else {
+            $this->field = static::$pattern;
+            $this->setType(self::HIDDEN);
+        }
+    }
+
+    public function get(bool $stringified = false) : array|string
+    {
+        if ($stringified === true) {
+            return self::stringify($this->field);
+        }
+
+        return $this->field;
+    }
+
+    public function setType(int $type) : self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getType() : int
+    {
+        return $this->type;
+    }
+
+    private static function stringify(array $field = []) : string
     {
         $string = '';
         if (empty($field)) {
@@ -99,26 +157,41 @@ final class Field extends Entity
         return $string;
     }
 
-    public static function getPattern(bool $stringified = false) : array|string
+    private function placeShips(array $ships) : self
     {
-        if ($stringified === true) {
-            return self::stringify(self::$pattern);
-        }
-        return self::$pattern;
-    }
+        $this->field = static::$pattern;
 
-    public static function validateCoordinates(string $coordinates) : bool
-    {
-        $coordinates = trim($coordinates);
-        if (is_string($coordinates) && strlen($coordinates) > 1 && strlen($coordinates) <= 3) {
-            $y = strtoupper(substr($coordinates, 0, 1));
-            if (preg_match('/[A-J]+/', $y)) {
-                $x = substr($coordinates, 1);
-                if (preg_match('/[0-9]+/', $x) && ($x <= 10)) {
-                    return true;
+        $filled = [];
+        foreach ($ships as $key => $ship) {
+            while (true) {
+                $dimension = (mt_rand(0,1) == 1 ? self::HORIZONTAL : self::VERTICAL);
+                $max = [self::HORIZONTAL => 10, self::VERTICAL => 10];
+                $max[$dimension] -= $ship->getSize();
+                $x = mt_rand(1, $max[self::HORIZONTAL]);
+                $y = mt_rand(1, $max[self::VERTICAL]);
+                for ($i = 0; $i < $ship->getSize(); $i++) {
+                    $curr = [self::HORIZONTAL => $x, self::VERTICAL => $y];
+                    $curr[$dimension] += $i;
+                    if (isset($filled[$curr[self::HORIZONTAL]][$curr[self::VERTICAL]])) {
+                        continue 2;
+                    }
+                }
+                break;
+            }
+            for ($i = 0; $i < $ship->getSize(); $i++) {
+                $curr = [self::HORIZONTAL => $x, self::VERTICAL => $y];
+                $curr[$dimension] += $i;
+                $filled[$curr[self::HORIZONTAL]][$curr[self::VERTICAL]] = $key;
+            }
+        }
+        for ($row = 1; $row <= 10; $row++) {
+            for ($col = 1; $col <= 10; $col++) {
+                if ($this->field[self::$y[$row]][self::$x[$col]] == self::WATER && isset($filled[$row][$col])) {
+                    $this->field[self::$y[$row]][self::$x[$col]] = self::SHIP_PART;
                 }
             }
         }
-        return false;
+
+        return $this;
     }
 }

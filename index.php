@@ -18,28 +18,26 @@ use Battleships\Game;
 use Battleships\Cache;
 
 $path = './var/cache';
-
-
 $game = new Game((new Cache($path)), Ships::get());
-$player1 = $game->addPlayer();
-$player2 = $game->addPlayer();
-
-
-
-$game->addPlayer();
-$game->addPlayer();
 if (!$game->getCache()->has('game')) {
     $game->addPlayer();
     $game->addPlayer();
     $game->getCache()->set('game', true);
 }
 
-echo Field::stringify($game->getCache()->get('players')[1]['field']);
+echo '<pre>';
+echo $game->getPlayer(1)->getField(Field::VISIBLE, true);
+echo PHP_EOL;
+echo $game->getPlayer(1)->getField(Field::HIDDEN, true);
 echo PHP_EOL;
 echo PHP_EOL;
+
+echo $game->getPlayer(2)->getField(Field::VISIBLE, true);
+echo PHP_EOL;
+echo $game->getPlayer(2)->getField(Field::HIDDEN, true);
 echo PHP_EOL;
 echo PHP_EOL;
-echo Field::stringify($game->getCache()->get('players')[2]['field']);
+
 
 echo PHP_EOL;
 echo PHP_EOL;

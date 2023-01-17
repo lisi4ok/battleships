@@ -29,4 +29,18 @@ trait ArrayableEnumeration
     {
         return array_search($case, self::cases()) !== false;
     }
+
+    public static function get($case)
+    {
+        $identifier = null;
+
+        foreach (self::cases() as $key => $item) {
+            if ($case === $item) {
+                $identifier = $key;
+            }
+        }
+
+        return self::values()[$identifier];
+    }
+
 }

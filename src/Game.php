@@ -11,7 +11,7 @@ namespace Battleships;
 use Battleships\Contracts\ShipInterface;
 use Psr\SimpleCache\CacheInterface;
 
-final class Game extends Entity
+final class Game
 {
     protected CacheInterface $cache;
 
@@ -65,15 +65,20 @@ final class Game extends Entity
         $cache = [];
         foreach ($this->players as $playerNumber => $player) {
             $playerNumber += 1;
-            $cache[$playerNumber]['field'] = $player->getField();
+            $cache[$playerNumber] = $player;
         }
         $this->getCache()->set('players', $cache);
         return $this;
     }
 
-    public function getPlayers()
+    public function getPlayers() : array
     {
-        return $this->getCache();
+        return $this->getCache()->get('players');
+    }
+
+    public function getPlayer(int $player) : Player
+    {
+        return $this->getPlayers()[$player];
     }
 
     public function __destruct()
@@ -89,5 +94,20 @@ final class Game extends Entity
     public function setCache(CacheInterface $cache)
     {
         $this->cache = $cache;
+    }
+
+    public static function validateCoordinates(string $coordinates) : bool
+    {
+        $coordinates = trim($coordinates);
+        if (is_string($coordinates) && strlen($coordinates) > 1 && strlen($coordinates) <= 3) {
+            $y = strtoupper(substr($coordinates, 0, 1));
+            if (preg_match('/[A-J]+/', $y)) {
+                $x = substr($coordinates, 1);
+                if (preg_match('/[0-9]+/', $x) && ($x <= 10)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

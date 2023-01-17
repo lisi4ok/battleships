@@ -72,8 +72,8 @@ abstract class Entity
         return serialize($res);
     }
 
-    public function unserialize($data) {
-
+    public function unserialize($data)
+    {
         $values = unserialize($data);
         foreach ($values as $key => $value) {
 
